@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="AI Healthcare Claims Triage Platform - synthetic demo by Sreya Kotha using Java/Spring Boot-style APIs, React-style workflows, RAG, risk scoring, and healthcare claims routing."
+    />
+    <title>AI Healthcare Claims Triage Platform</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#dashboard" aria-label="AI Claims Triage home">
+        <span class="brand-mark">AI</span>
+        <span>
+          <strong>Claims Triage</strong>
+          <small>Synthetic healthcare workflow demo</small>
+        </span>
+      </a>
+      <nav class="topnav" aria-label="App sections">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#workspace">Workspace</a>
+        <a href="#intake">New Claim</a>
+        <a href="#architecture">Architecture</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="dashboard" class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">AI-enabled full stack healthcare project</p>
+          <h1>Claims triage with explainable risk, policy evidence, and routed next actions.</h1>
+          <p>
+            A portfolio-ready platform that simulates how enterprise healthcare teams can prioritize
+            claims, detect missing documentation, retrieve policy evidence, and route work through
+            auditable AI-assisted workflows.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#workspace">Open Triage Workspace</a>
+            <a class="button secondary" href="#architecture">View Architecture</a>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="System health metrics">
+          <div class="metric">
+            <span id="heroClaims">0</span>
+            <small>synthetic claims analyzed</small>
+          </div>
+          <div class="metric">
+            <span id="heroHighRisk">0</span>
+            <small>high-risk cases routed</small>
+          </div>
+          <div class="metric">
+            <span id="heroAvgConfidence">0%</span>
+            <small>avg confidence</small>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section-band summary-grid" aria-label="Operational summary">
+        <article class="summary-card">
+          <span class="summary-label">Model objective</span>
+          <strong>Prioritize claims before manual review</strong>
+          <p>Scores denial risk, urgency, missing evidence, and routing needs from synthetic claim attributes.</p>
+        </article>
+        <article class="summary-card">
+          <span class="summary-label">RAG layer</span>
+          <strong>Policy evidence retrieval</strong>
+          <p>Ranks relevant policy rules and summarizes why each claim needs approval, escalation, or documentation.</p>
+        </article>
+        <article class="summary-card">
+          <span class="summary-label">Enterprise concerns</span>
+          <strong>Security and observability</strong>
+          <p>Demonstrates audit logs, confidence tracking, role-aware routing, and production-style event traces.</p>
+        </article>
+      </section>
+
+      <section id="workspace" class="workspace section-band" aria-labelledby="workspaceTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Triage workspace</p>
+          <h2 id="workspaceTitle">Review synthetic claims in priority order.</h2>
+        </div>
+
+        <div class="app-shell">
+          <aside class="claim-list" aria-label="Synthetic claims">
+            <div class="list-toolbar">
+              <label for="queueFilter">Queue</label>
+              <select id="queueFilter">
+                <option value="all">All queues</option>
+                <option value="Clinical Review">Clinical Review</option>
+                <option value="Missing Documentation">Missing Documentation</option>
+                <option value="Fast Track">Fast Track</option>
+                <option value="Fraud Review">Fraud Review</option>
+              </select>
+            </div>
+            <div id="claimList" class="claim-items"></div>
+          </aside>
+
+          <section class="claim-detail" aria-live="polite">
+            <div class="detail-header">
+              <div>
+                <span id="claimStatus" class="status-pill">Pending</span>
+                <h3 id="claimTitle">Select a claim</h3>
+                <p id="claimSubtitle">Risk score, evidence, and next action will appear here.</p>
+              </div>
+              <div class="risk-gauge" aria-label="Risk score">
+                <span id="riskScore">0</span>
+                <small>risk</small>
+              </div>
+            </div>
+
+            <div class="insight-grid">
+              <article class="insight-card">
+                <h4>AI Summary</h4>
+                <p id="aiSummary"></p>
+              </article>
+              <article class="insight-card">
+                <h4>Recommended Action</h4>
+                <p id="nextAction"></p>
+              </article>
+              <article class="insight-card">
+                <h4>Missing Evidence</h4>
+                <ul id="missingEvidence"></ul>
+              </article>
+              <article class="insight-card">
+                <h4>Model Signals</h4>
+                <div id="modelSignals" class="signal-list"></div>
+              </article>
+            </div>
+
+            <div class="split-panel">
+              <article class="panel">
+                <h4>Retrieved Policy Evidence</h4>
+                <div id="policyResults" class="policy-results"></div>
+              </article>
+              <article class="panel">
+                <h4>Audit Events</h4>
+                <div id="auditTrail" class="audit-trail"></div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="intake" class="section-band light" aria-labelledby="intakeTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Synthetic claim intake</p>
+          <h2 id="intakeTitle">Create a new test case and run triage.</h2>
+        </div>
+
+        <form id="claimForm" class="claim-form">
+          <div class="field">
+            <label for="memberType">Member Type</label>
+            <select id="memberType">
+              <option>Commercial</option>
+              <option>Medicare Advantage</option>
+              <option>Medicaid</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="claimType">Claim Type</label>
+            <select id="claimType">
+              <option>Prior Authorization</option>
+              <option>Prescription</option>
+              <option>Specialty Drug</option>
+              <option>Emergency Care</option>
+              <option>Out-of-Network</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="claimAmount">Claim Amount</label>
+            <input id="claimAmount" type="number" min="100" max="50000" step="100" value="4800" />
+          </div>
+          <div class="field">
+            <label for="daysOpen">Days Open</label>
+            <input id="daysOpen" type="number" min="0" max="45" value="6" />
+          </div>
+          <div class="field">
+            <label for="documentation">Documentation</label>
+            <select id="documentation">
+              <option>Complete</option>
+              <option>Missing clinical notes</option>
+              <option>Missing diagnosis code</option>
+              <option>Missing prior authorization</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="history">Member History</label>
+            <select id="history">
+              <option>Stable history</option>
+              <option>Repeated denials</option>
+              <option>Recent plan change</option>
+              <option>Duplicate claim pattern</option>
+            </select>
+          </div>
+          <button id="runTriageButton" class="button primary" type="submit">Run AI Triage</button>
+        </form>
+      </section>
+
+      <section id="architecture" class="section-band architecture" aria-labelledby="architectureTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Architecture</p>
+          <h2 id="architectureTitle">Designed like a Java full stack enterprise system.</h2>
+        </div>
+
+        <div class="architecture-grid">
+          <article class="arch-step">
+            <span>01</span>
+            <h3>React Claims Dashboard</h3>
+            <p>Queue filters, detail workspace, risk explanation, policy evidence, and audit timeline.</p>
+          </article>
+          <article class="arch-step">
+            <span>02</span>
+            <h3>Spring Boot API Layer</h3>
+            <p>Claim intake, triage orchestration, secure REST contracts, JWT auth, and role-based routing.</p>
+          </article>
+          <article class="arch-step">
+            <span>03</span>
+            <h3>AI/RAG Service</h3>
+            <p>Risk classification, policy retrieval, case summarization, confidence scoring, and next actions.</p>
+          </article>
+          <article class="arch-step">
+            <span>04</span>
+            <h3>Event and Observability Layer</h3>
+            <p>Kafka/EventBridge events, Redis caching, PostgreSQL storage, CloudWatch-style logs, and audit history.</p>
+          </article>
+        </div>
+
+        <div class="resume-block">
+          <h3>Resume-ready bullets</h3>
+          <ul>
+            <li>Built an AI-enabled healthcare claims triage platform that classifies synthetic claims by urgency, denial risk, and missing documentation while generating explainable next-action recommendations.</li>
+            <li>Implemented retrieval-augmented policy matching to summarize claim context, surface relevant coverage rules, and support auditable decision workflows through a React dashboard.</li>
+            <li>Designed production-style API, security, and observability patterns including JWT-style access boundaries, structured audit events, confidence scoring, queue routing, and event-driven processing.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>Built by Sreya Kotha</span>
+      <span>Java • Spring Boot • React • AWS • RAG • Healthcare AI</span>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
