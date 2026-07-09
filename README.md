@@ -12,7 +12,13 @@ This demo intentionally uses generated sample claims only. It does not process r
 
 ## Live Demo
 
-Run locally and open:
+Public demo:
+
+```text
+https://sreyakotha.github.io/ai-healthcare-claims-triage/
+```
+
+Run locally:
 
 ```text
 http://localhost:8766/ai-healthcare-claims-triage/index.html
